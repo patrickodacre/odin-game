@@ -95,6 +95,13 @@ loop :: proc()
 	    ctx.delta_time = ctx.now_time - ctx.prev_time
 	    ctx.prev_time = ctx.now_time
 
+		state := SDL.GetKeyboardState(nil)
+
+		ctx.moving_left = state[SDL.Scancode.A] > 0
+		ctx.moving_right = state[SDL.Scancode.D] > 0
+		ctx.moving_up = state[SDL.Scancode.W] > 0
+		ctx.moving_down = state[SDL.Scancode.S] > 0
+
     	if SDL.PollEvent(&event)
     	{
     		if event.type == SDL.EventType.QUIT
@@ -104,13 +111,6 @@ loop :: proc()
 
 			if event.type == SDL.EventType.KEYDOWN
 			{
-				state := SDL.GetKeyboardState(nil)
-
-				ctx.moving_left = state[SDL.Scancode.A] > 0
-				ctx.moving_right = state[SDL.Scancode.D] > 0
-				ctx.moving_up = state[SDL.Scancode.W] > 0
-				ctx.moving_down = state[SDL.Scancode.S] > 0
-
 				#partial switch event.key.keysym.scancode
 				{
 					case .L:
@@ -127,14 +127,6 @@ loop :: proc()
 
 			if event.type == SDL.EventType.KEYUP
 			{
-
-				state := SDL.GetKeyboardState(nil)
-
-				ctx.moving_left = state[SDL.Scancode.A] > 0
-				ctx.moving_right = state[SDL.Scancode.D] > 0
-				ctx.moving_up = state[SDL.Scancode.W] > 0
-				ctx.moving_down = state[SDL.Scancode.S] > 0
-
 			}
 
     	}
