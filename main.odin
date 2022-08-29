@@ -245,7 +245,8 @@ create_resources :: proc()
 			y = WINDOW_H / 2,
 			w = 72,
 			h = 117,
-		}
+		},
+		alive_until = -1
 
 	}
 
@@ -359,10 +360,10 @@ render :: proc()
 
 	for e, _ in &ctx.entities
 	{
-		// if (e.alive_until > 0)
-		// {
+		if e.alive_until > 0 || e.alive_until == -1
+		{
 			SDL.RenderCopy(ctx.renderer, e.tex, &e.source, &e.dest)
-		// }
+		}
 	}
 
 	SDL.RenderPresent(ctx.renderer)
