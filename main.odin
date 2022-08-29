@@ -195,6 +195,13 @@ process_inputs :: proc(frame: int)
 		}
 	}
 
+	if (ctx.moving_left && ctx.moving_right) || (ctx.moving_up && ctx.moving_down)
+	{
+		// standing still
+		// TODO:: implement a curious / shrug / tapping feet animation
+		char.source = ctx.char_moving_down[1]
+	}
+
 
 }
 
