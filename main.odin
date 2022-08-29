@@ -149,6 +149,7 @@ process_inputs :: proc(frame: int)
 	char := &ctx.entities[CHAR_IDX]
 
 	animation_speed := (SDL.GetTicks() / 175)
+	char_animation_idx := animation_speed %% 3
 
 	if ctx.moving_left
 	{
@@ -156,7 +157,7 @@ process_inputs :: proc(frame: int)
 
 		if new_x > 0
 		{
-			char.source = ctx.char_moving_left[animation_speed %% 3]
+			char.source = ctx.char_moving_left[char_animation_idx]
 			char.dest.x = new_x
 		}
 	}
@@ -167,7 +168,7 @@ process_inputs :: proc(frame: int)
 
 		if new_x < (WINDOW_W - 32)
 		{
-			char.source = ctx.char_moving_right[animation_speed %% 3]
+			char.source = ctx.char_moving_right[char_animation_idx]
 			char.dest.x = new_x
 		}
 	}
@@ -178,7 +179,7 @@ process_inputs :: proc(frame: int)
 
 		if new_y > 0
 		{
-			char.source = ctx.char_moving_up[animation_speed %% 3]
+			char.source = ctx.char_moving_up[char_animation_idx]
 			char.dest.y = new_y
 		}
 	}
@@ -189,7 +190,7 @@ process_inputs :: proc(frame: int)
 
 		if new_y < (WINDOW_H - 32)
 		{
-			char.source = ctx.char_moving_down[animation_speed %% 3]
+			char.source = ctx.char_moving_down[char_animation_idx]
 			char.dest.y = new_y
 		}
 	}
