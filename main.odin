@@ -90,8 +90,6 @@ loop :: proc()
 
 	event : SDL.Event
 
-	frame := 0
-
 	for !ctx.game_over
 	{
 
@@ -135,20 +133,14 @@ loop :: proc()
 
     	}
 
-    	process_inputs(frame)
+    	process_inputs()
 
     	render()
 
-    	frame += 1
-
-    	if frame / 3 >= 3
-    	{
-    		frame = 0
-    	}
 	}
 }
 
-process_inputs :: proc(frame: int)
+process_inputs :: proc()
 {
 	char := &ctx.entities[CHAR_IDX]
 
