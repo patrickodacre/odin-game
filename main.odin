@@ -34,9 +34,14 @@ CTX :: struct
 	renderer: ^SDL.Renderer,
 
 	entities: [1]Entity,
+	grasses: [dynamic]Entity,
 
 	base_velocity: f64,
 	velocity: f64,
+
+	// map
+	grass_img: ^SDL.Surface,
+	grass_tex: ^SDL.Texture,
 
 	// main char
 	char_img: ^SDL.Surface,
@@ -64,6 +69,7 @@ ctx := CTX{
 	game_over = false,
 	base_velocity =  400,
 	velocity =  400,
+	grasses = make([dynamic]Entity, 0, WINDOW_W * WINDOW_H),
 	perf_frequency = f64(SDL.GetPerformanceFrequency())
 }
 
@@ -225,6 +231,36 @@ init_sdl :: proc()
 
 create_resources :: proc()
 {
+
+	ctx.grass_img = SDL_Image.Load("assets/sprites/tilesets/grass.png")
+	ctx.grass_tex = SDL.CreateTextureFromSurface(ctx.renderer, ctx.grass_img)
+
+	for y in 1..=WINDOW_H
+	{
+		for x in 1..=WINDOW_W
+		{
+
+			g := Entity{
+				tex = ctx.grass_tex,
+				source = SDL.Rect{
+					x = 0,
+					y = 0,
+					w = 16,
+					h = 16,
+				},
+				dest = SDL.Rect{
+					x = i32(x * 16) - 16,
+					y = i32(y * 16) - 16,
+					w = 32,
+					h = 32,
+				}
+			}
+
+			append(&ctx.grasses, g)
+
+		}
+	}
+
 	ctx.char_img = SDL_Image.Load("assets/bardo.bmp")
 	ctx.char_tex = SDL.CreateTextureFromSurface(ctx.renderer, ctx.char_img)
 
@@ -353,6 +389,10 @@ render :: proc()
 {
 
 	SDL.RenderClear(ctx.renderer)
+	for e, _ in &ctx.grasses
+	{
+		SDL.RenderCopy(ctx.renderer, e.tex, &e.source, &e.dest)
+	}
 
 	for e, _ in &ctx.entities
 	{
