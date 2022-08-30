@@ -25,6 +25,8 @@ Entity :: struct
 
 CTX :: struct
 {
+	perf_frequency: f64,
+
 	game_over: bool,
 
 	window: ^SDL.Window,
@@ -61,6 +63,7 @@ ctx := CTX{
 	game_over = false,
 	base_velocity =  400,
 	velocity =  400,
+	perf_frequency = f64(SDL.GetPerformanceFrequency())
 }
 
 main :: proc()
@@ -79,9 +82,9 @@ main :: proc()
 loop :: proc()
 {
 
-	ctx.now_time = f64(SDL.GetPerformanceCounter()) / f64(SDL.GetPerformanceFrequency())
+	ctx.now_time = f64(SDL.GetPerformanceCounter()) / ctx.perf_frequency
 	SDL.Delay(1)
-    ctx.prev_time = f64(SDL.GetPerformanceCounter()) / f64(SDL.GetPerformanceFrequency())
+    ctx.prev_time = f64(SDL.GetPerformanceCounter()) / ctx.perf_frequency
 	ctx.delta_time =  ctx.now_time - ctx.prev_time
 
 	event : SDL.Event
